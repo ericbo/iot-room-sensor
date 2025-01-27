@@ -27,7 +27,14 @@ DHT22 = dht.DHT22(machine.Pin(4))
 
 def connect_to_wan():
     wan.active(True)
-    wan.connect(ssid, password)
+    while True:
+        try:
+            wan.connect(ssid, password)
+            break
+        except OSError:
+            print("Failed to connect to WiFi, retrying")
+            time.sleep(1)
+            continue
 
     while not wan.isconnected():
         pass
